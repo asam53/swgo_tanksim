@@ -210,10 +210,10 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
     G4String particleName = "mu-";
     G4ParticleDefinition* particle = particleTable -> FindParticle(particleName);
 
-    /*
+    /**
     G4double angle = gZenithAngle;
     G4double distance = 1;
-    /*G4double l = radData -> RandomGen(-3, 3);
+    G4double l = radData -> RandomGen(-3, 3);
     G4double x = 0;
     G4double y = - 3 * sin(angle * deg) + l * cos(angle * deg);
     G4double z = - 3 * cos(angle * deg) - l * sin(angle * deg);*
@@ -226,7 +226,7 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
     x = x * m;
     y = y * m;
     z = z * m;
-/*std::cout <<
+    std::cout <<
     "x: " << x / m<< std::endl
     << "y: " << y / m << std::endl
     << "z: " << z / m << std::endl;
@@ -240,12 +240,12 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
 
     G4ThreeVector direction(ux, uy, uz);
 
-    /*std::cout << "angle: " << angle << std::endl
+    std::cout << "angle: " << angle << std::endl
     << "alpha: " << alpha / deg << std::endl
     << "ux: " << ux << std::endl
     << "uy: " << uy  << std::endl
     << "uz: " << uz  << std::endl;
-    */
+    **/
 
     fParticleGun -> SetParticleDefinition(particle);
     fParticleGun -> SetParticleEnergy((1 * GeV));

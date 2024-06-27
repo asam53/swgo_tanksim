@@ -44,13 +44,6 @@ void WOM::PlaceIt(G4RotationMatrix glassRot, G4ThreeVector GlassGlobalPos)
     fGlassGlobalPos = GlassGlobalPos;
     Construction();
 }
-void WOM::PlaceIt(G4RotationMatrix glassRot, G4ThreeVector glassGlobalPos)
-{
-    fGlassRot = glassRot;
-    fGlassGlobalPos = glassGlobalPos;
-    Construction();
-
-}
 void WOM::GetSharedData()
 {
     G4double paintOffset = gPaintThickness;

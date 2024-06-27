@@ -111,6 +111,28 @@ void OMSimDetectorConstruction::ConstructWorld()
     G4LogicalVolume* topAbsLogical = new G4LogicalVolume(topAbsSolid, absorber, "Top_Abs_Cylinder_log");
     G4VPhysicalVolume* topAbsPhysical = new G4PVPlacement(0, G4ThreeVector(0., 0., 0), topAbsLogical, "Top_Abs_Cylinder_phys", topLogical, false, 0, true);
 
+//Debugging why the top of the cylinder is not absorbing - Akza -----------------------------------------------
+
+    /**
+    Define an optical surface in addition to absorption layer to ensure all photons are absorbed 
+    **/
+    G4OpticalSurface* topSurface = new G4OpticalSurface("topSurface");
+    topSurface -> SetType(dielectric_dielectric);
+    topSurface -> SetFinish(polished);
+    topSurface -> SetModel(glisur);
+
+    G4MaterialPropertiesTable* mpt = new G4MaterialPropertiesTable();
+    G4double photonE[] = {1.0*eV, 8.0*eV};
+    G4double refl[] = {0., 0.};
+    mpt -> AddProperty("REFLECTIVITY", photonE, refl, 2);
+    topSurface->SetMaterialPropertiesTable(mpt);
+
+    auto absSurface = new G4LogicalBorderSurface("TopSurface", topPhysical, mWorldPhysical, topSurface);
+
+// end of debugging -------------------------------------------------------------------------------------------
+
+
+
 
     /**
     *Generating bottom cylinder

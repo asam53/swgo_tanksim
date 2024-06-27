@@ -45,11 +45,6 @@ extern G4double gmdomseparation;
 extern G4int gn_mDOMs;
 extern G4bool gCADImport;
 extern G4bool gVis;
-<<<<<<< HEAD
-=======
-
-
->>>>>>> upstream/swgo_dev
 
 LOM18::LOM18(OMSimInputData* pData, G4bool pPlaceHarness) {
     mData = pData;
