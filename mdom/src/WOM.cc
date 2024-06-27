@@ -38,9 +38,10 @@ WOM::~WOM()
     delete fPMTCathode;
     */
 }
-void WOM::PlaceIt()
+void WOM::PlaceIt(G4RotationMatrix glassRot, G4ThreeVector GlassGlobalPos)
 {
-    //fGlassRot = glassRot;
+    fGlassRot = glassRot;
+    fGlassGlobalPos = GlassGlobalPos;
     Construction();
 }
 void WOM::PlaceIt(G4RotationMatrix glassRot, G4ThreeVector glassGlobalPos)
@@ -191,7 +192,7 @@ void WOM::Construction()
     #endif // WLS_BOUNDARY
     //new G4PVPlacement(0, G4ThreeVector(0, 0, 0), fWOMPaintLogical, "WOM_Paint_Logical", fLogicMother, false, 0, true); //delete this later
     //placing pressoure housing solids
-    new G4PVPlacement(&fGlassRot, G4ThreeVector(0, 0, 0), fGlassLogical, "glassPhysical", fLogicMother, false, 0, true);
+    new G4PVPlacement(&fGlassRot, fGlassGlobalPos, fGlassLogical, "glassPhysical", fLogicMother, false, 0, true);
 }
 G4MultiUnion* WOM::PressureVessel(const G4String& vesselName, G4double vesselTubeRad, G4double vesselCapRad) //for now it;s hardcoded but will change soon.
 {

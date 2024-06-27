@@ -117,9 +117,8 @@ void LOM16::Construction()
     //Placements
     new G4PVPlacement(0, G4ThreeVector(0, 0, 0), lInnerVolumeLogical, "Gel_physical", lGlassLogical, false, 0); //Innervolume (mother volume for all components)
     if(!gVis)
-    {
         PlacePMTs(lInnerVolumeLogical);
-    }
+
     PlaceGelpads(lInnerVolumeLogical);
     if (gCADImport) PlaceCADSupportStructure(lInnerVolumeLogical);
     new G4PVPlacement( 0 , G4ThreeVector(0, 0, 0) , lEquatorbandLogical, "Equatorband" , lInnerVolumeLogical, false, 0);

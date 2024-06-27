@@ -28,7 +28,6 @@ public:
     WOM(G4LogicalVolume*, OMSimInputData* );
     ~WOM();
 
-    void PlaceIt();
     void PlaceIt(G4RotationMatrix, G4ThreeVector);
 
     inline G4MultiUnion* GetOuterSolid() { return fGlassSolid; }

@@ -171,6 +171,10 @@ void OMSimRunManager::BeamOn()
 
         GeneratePhoton();
     }
+    else if(fInteraction == "muon")
+    {
+        GenerateMuons();
+    }
     else
     {
         std::cerr << "Invalid interaction channel. Aborting..." << std::endl;
@@ -295,12 +299,40 @@ void OMSimRunManager::GeneratePhoton()
         fRunManager -> BeamOn(1);
     }
 }
+void OMSimRunManager::GenerateMuons()
+{
+    fPrimaryGenerator -> SetActionType(muon);
+    G4int numParticles = 100;
+    fPrimaryGenerator -> SetupMuons(numParticles);
+    for(int i = 0; i < numParticles; i++)
+    {
+        fRunManager -> BeamOn(1);
+    }
+}
 void OMSimRunManager::OpenFile()
 {
-    G4cout << ":::::::::This is the beginning of Run Action::::::::" << G4endl;
-    startingtime = clock() / CLOCKS_PER_SEC;
-    G4String filename = ghitsfilename + ".dat";
+  G4cout << ":::::::::This is the beginning of Run Action::::::::" << G4endl;
+  startingtime = clock() / CLOCKS_PER_SEC;
+  G4String filename = ghitsfilename + ".ecsv";
 	gAnalysisManager.datafile.open(filename, std::ios::out /*| std::ios::app*/);
+
+  //- Write header into data file. We want to use ECSV format only.
+  gAnalysisManager.datafile << "# %ECSV 1.0\n# ---\n# delimiter: ','\n"
+           << "# datatype: [\n"
+           << "#   { name: RUN_ID,          datatype: int32             },\n"
+           << "#   { name: STATS_HIT_TIME,  datatype: float64, unit: ns },\n"
+           << "#   { name: PHOTON_ENERGY,   datatype: float64, unit: eV },\n"
+           << "#   { name: PMT_ID,          datatype: int32             },\n"
+           << "#   { name: PHOTON_POS_X,    datatype: float64, unit: m  },\n"
+           << "#   { name: PHOTON_POS_Y,    datatype: float64, unit: m  },\n"
+           << "#   { name: PHOTON_POS_Z,    datatype: float64, unit: m  },\n"
+           << "#   { name: STATS_VERTEX_X,  datatype: float64, unit: m  },\n"
+           << "#   { name: STATS_VERTEX_Y,  datatype: float64, unit: m  },\n"
+           << "#   { name: STATS_VERTEX_Z,  datatype: float64, unit: m  },\n"
+           << "#   { name: POSITRON_ID,     datatype: int32,            },\n"
+           << "#   { name: SURVIVED_QE,     datatype: bool,             },\n"
+           << "# ]\nRUN_ID,STATS_HIT_TIME,PHOTON_ENERGY,PMT_ID,PHOTON_POS_X,PHOTON_POS_Y,PHOTON_POS_Z,STATS_VERTEX_X,STATS_VERTEX_Y,STATS_VERTEX_Z,POSITRON_ID,SURVIVED_QE\n";
+
 	gNumCherenkov = 0;
 	gNumScint = 0;
 }
