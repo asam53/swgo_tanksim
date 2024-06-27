@@ -248,8 +248,8 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
     **/
 
     fParticleGun -> SetParticleDefinition(particle);
-    fParticleGun -> SetParticleEnergy((1 * GeV));
-    fParticleGun -> SetParticlePosition(G4ThreeVector(0, 0, 5 * m));
+    fParticleGun -> SetParticleEnergy((60 * MeV));
+    fParticleGun -> SetParticlePosition(G4ThreeVector(2*m, 0, 5 * m));
     fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(0, 0, -1));
 
     delete radData;

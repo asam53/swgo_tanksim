@@ -91,7 +91,7 @@ void OMSimPhysicsList::ConstructProcess()
 	G4Cerenkov* theCerenkovProcess = new G4Cerenkov("Cerenkov");
     theCerenkovProcess->SetTrackSecondariesFirst(false);
     theCerenkovProcess->SetMaxBetaChangePerStep(10.0);
-    theCerenkovProcess->SetMaxNumPhotonsPerStep(10);
+    theCerenkovProcess->SetMaxNumPhotonsPerStep(1);
 
 //The Scintillation Process
     /*G4Scintillation* theScintillationProcess = new G4Scintillation("Scintillation");
