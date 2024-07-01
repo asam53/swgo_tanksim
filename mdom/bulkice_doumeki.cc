@@ -76,7 +76,8 @@ void help() //needs change
     << " (for simulating supernovae neutrino flux)" << std::endl;
 
     std::cout << " " << std::endl;
-    //std::cout << "./bulkice_doumeki" << " " << "[OM Model]" << "vis" << " (for visualization)" << std::endl;
+    
+    std::cout << "./bulkice_doumeki" << " " << "[OM Model]" << " " << "vis" << " " << "[zenith angle (degree)]" << std::endl;
     std::cout << "./bulkice_doumeki" << " " << "[OM Model]" << " " << "opticalphoton" << " " << "[depth index]" << " " << "[output folder] " << "[run id] "<< "[distance (m)] "
     << "[zenith angle (degree)]" << " " << " (for photon wave with a single zenith angle)" << std::endl;
 
@@ -219,9 +220,9 @@ void ParseCommandLine(int argc, char** argv, G4int& PMT_model, G4double& worldsi
         PMT_model = GetModel(model);
         gPMT = 5;
         gVis = true;
-        interaction_channel = argv[2];
-        //worldsize = 20;
-        //gZenithAngle = atof(argv[3]);
+        //interaction_channel = argv[2];
+        worldsize = 20;
+        gZenithAngle = atof(argv[2]);
     }
     else
     {

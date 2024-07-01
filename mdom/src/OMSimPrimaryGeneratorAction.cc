@@ -210,19 +210,26 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
     G4String particleName = "mu-";
     G4ParticleDefinition* particle = particleTable -> FindParticle(particleName);
 
-    /**
-    G4double angle = gZenithAngle;
-    G4double distance = 1;
-    G4double l = radData -> RandomGen(-3, 3);
-    G4double x = 0;
-    G4double y = - 3 * sin(angle * deg) + l * cos(angle * deg);
-    G4double z = - 3 * cos(angle * deg) - l * sin(angle * deg);*
 
-    G4double r = radData -> RandomGen(-1, 1);
+
+// computes x,y,z coordinates for the angle specified by user for visualization    
+// note: the injected angle can be anywhere on the surface, and will not be at a particular spot
+// if user wants to control the position where the angle is injected (center, edge) comment out line 220-260
+// and directly insert the coordinates and momentum you need in line 264-265
+
+    G4double angle = gZenithAngle;
+    G4double distance = 5;
+    G4double r = 0;   //radData -> RandomGen(-1, 1);
+
+/**
     G4double y = - distance * sin(angle * deg) + r * cos(angle * deg);
     G4double z = - distance * cos(angle * deg) - r * sin(angle * deg);
     G4double x = 0;
+**/
 
+    G4double y = 0;
+    G4double z = distance * cos(angle * deg) - r * sin(angle * deg);
+    G4double x = distance * sin(angle * deg) + r * cos(angle * deg);
     x = x * m;
     y = y * m;
     z = z * m;
@@ -233,24 +240,29 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
 
 
     G4ThreeVector position(x, y, z);
+    
+    G4double ux = - sin(angle * deg);
+    G4double uy = 0;
+    G4double uz = - cos(angle * deg);
 
+
+/**
     G4double ux = 0;
     G4double uy = sin(angle * deg) ;
     G4double uz =  cos(angle * deg);
-
+**/
     G4ThreeVector direction(ux, uy, uz);
 
     std::cout << "angle: " << angle << std::endl
-    << "alpha: " << alpha / deg << std::endl
+    << "alpha: " << angle / deg << std::endl
     << "ux: " << ux << std::endl
     << "uy: " << uy  << std::endl
     << "uz: " << uz  << std::endl;
-    **/
-
+    
     fParticleGun -> SetParticleDefinition(particle);
     fParticleGun -> SetParticleEnergy((60 * MeV));
-    fParticleGun -> SetParticlePosition(G4ThreeVector(2*m, 0, 5 * m));
-    fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(0, 0, -1));
+    fParticleGun -> SetParticlePosition(position);
+    fParticleGun -> SetParticleMomentumDirection(direction);
 
     delete radData;
 
