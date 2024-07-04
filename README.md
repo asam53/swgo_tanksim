@@ -1,7 +1,7 @@
-# Bulk-Ice DOUMEKI
+# SWGO_TANKSIM
 
 
-This is a GEANT4 based simulation of different optical modules currently in use and to be deployed in future in IceCube Neutrino Observatory in South Pole. Currently available optical modules for simulation are MDOM, LOM16, LOM18, PDOM, D-Egg, WOM (currently under development). Except for WOM, the optical module simulation was initially written by M. Unland and C. Lozano, and later they were modified by me. The simulation also contains detailed depth dependent ice properties under antarctic ice sheet and it can simulation 40*40*40 cubic meter of ice at different temperature. Currently, it can simulate positron and electron flux from CCSN neutrinos, background radioactivity inside pressure vessel of MDOM, LOMs, and D-Egg, and photon wave with different Zenith Angle. It also accepts SNEWPY neutrino flux models in a python program called "merger" and use sntools to simulate the positron and electron flux from ibd and enees interactions. 
+This is a GEANT4 based simulation of different optical modules in the IceCube Neutrino Observatory in the South Pole modified for the SWGO Observatory. Currently available optical modules for IceCube are MDOM, LOM16, LOM18, PDOM, D-Egg, WOM (currently under development). Except for WOM, the optical module simulation was initially written by M. Unland and C. Lozano, and later they were modified by Waly M. Z. Karim. Currently, it can simulate muon flux from CCSN neutrinos, background radioactivity inside pressure vessel of MDOM, LOMs, and D-Egg, and photon wave with different Zenith Angle. It also accepts SNEWPY neutrino flux models in a python program called "merger" and use sntools to simulate the positron and electron flux from ibd and enees interactions.
 
 
 ## Quick Start Guide
@@ -11,58 +11,74 @@ This is a GEANT4 based simulation of different optical modules currently in use 
 ### Prerequisite for compiling bulkice\_doumeki: 
 
 - **Set up env.sh file (must do before compilation):**
-  - Go to "/path\_to\_bulkice\_doumeki/mdom/"
+  - Go to "/path\_to\_swgo\_tanksim/mdom/"
   - Open env.sh file in writing mode.
   - Set G4BUILD variable to your Geant4 installation directory
   - Save and exit.
   - Type ". env.sh" on your terminal to set up the environment
 - **Set up build directory and compile:**
-  - Go to "/path\_to\_bulkice\_doumeki/mdom/"
+  - Go to "/path\_to\_swgo\_tanksim/mdom/"
   - Type "mkdir build"
   - Type "cd build"
   - Type "cmake **..**"
   - Type "make -jN" or "make"
 
-This will generate a binary executable under the "/path\_to\_bulkice\_doumeki/mdom/build/" directory.
+This will generate a binary executable under the "/path\_to\_swgo\_tanksim/mdom/build/" directory.
 
 - **Set Up the Output Folder**
-  - Go to "/path\_to\_bulkice\_doumeki/mdom/build/"
+  - Go to "/path\_to\_swgo\_tanksim/mdom/build/"
   - Type "mkdir output". (You can name your output folder however you want).
   - Changing the output folder to a different directory will require changing the code, and will be explained later along with how to change the output fields.
   - Note: by default, Output will be dumped in a folder in the build directory.
+
+## Installation Errors
+1. "fatal error: 'boost/property_tree/ptree.hpp' file not found"
+	- install boost using your preferred package manager. (e.g. brew install boost)
+2. "fatal error: 'bits/stdc++.h' file not found"
+	- Follow the instructions found [here](https://apple.stackexchange.com/questions/148401/file-not-found-error-while-including-bits-stdc-h). 
+	- Install gcc, download the bits file, and add it to the /Library/Developer/CommandLineTools/usr/include directory.
 
 ## Simulating Events
 
 Events can be simulated in two different ways. One is using the Visualization driver OpenGL, where you can see the detector geometry and the particle interaction, but it has limited capabilities in terms of visualizing a large number of particles. Another way is running it in batch mode, where you can simulate a realistic number of events easily.
 
-## Visualization
-
-Visualization is currently under development, so limited functionality is available. You can only visualize a plane wave of optical photons at an user-defined angle and their interaction with the WOM module. In order to do that:
+### Visualization
 
 - Make sure you are in the build directory and the program is compiled and the executable is generated.
-- An example run could be **"./bulkice\_doumeki wom vis 45"**. Here, the simulated photon wave will make a 45 degree angle with the detector surface.
+- Currently visualization mode is setup to inject a muon from a distance of 5m above tank. 
+- An example run could be **"./bulkice_doumeki lom18 angle(deg)"**.
 
-## Batch Mode
+### Batch Mode
+- Type **"./bulkice_doumeki [om model] [interaction channel] [depth index] [output folder] [run id]"**
+- Available OM Models: [dom, mdom, lom16, lom18, pmt, degg]
+- Available interaction channels: [ibd, enees, all, radioactivity]
+- The depth index is irrelevant to SWGO, but it must be included for the simulation to run.
+- Example run: "**./bulkice_doumeki lom18 muon 88 output 0**"
 
-### Simulating IBD/ENEES/ALL/Radioactive\_Bancground Noise
-    - Type **"./bulkice\_doumeki [om model] [interaction channel] [depth index] [output folder] [run id]"**
-    - Available OM Models: [dom, mdom, lom16, lom18, pmt, degg, wom]
-    - Available interaction channels: [ibd, enees, all, radioactivity]
-    - Example run: " **./bulkice\_doumeki mdom ibd 88 output 0**"
 
-### Simulating Photon Waves for Measuring Angular Sensitivity
+## Examples
 
-#### Simulating photon waves at a single angle
+### 1. Inject a muon at 45 degrees
+- Visualization mode: **"./bulkice_doumeki lom18 45"**
+- Batch mode: currently the batch mode for muons does not accept angle information in the command line. If you want to inject the muon at 45 deg, do the following:
+	- vi "/path\_to\_swgo\_tanksim/mdom/src/OMSimPrimaryGenerator.cc"
+	- In the "void OMSimPrimaryGeneratorAction::SetupMuons(G4int numParticles)" class, change the position and momentum. 
+	- fParticleGun -> SetParticlePosition(G4ThreeVector(5*m, 0, 5 * m));
+        - fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(-1, 0, -1));
 
-  - Type "**./bulkice\_doumeki [om model] opticalphoton [depth index] [output folder] [run id] [distance from the detector center (m)] [angle (degree)]"**
-  - Available OM Models: [dom, mdom, lom16, lom18, pmt, degg, wom]
-  - Example run: " **./bulkice\_doumeki wom opticalphoton 88 output 0 2 45**".
+### 2. Muon injection in visual mode 
+- Currently, muons in visual mode are set to be injected at the same spot for each run. You can randomize the place of injection (i.e. different spots around the tank) by doing the following:
+	- vi "/path\_to\_swgo\_tanksim/mdom/src/OMSimPrimaryGeneratorAction.cc"
+	- Go to "void OMSimPrimaryGeneratorAction::GenerateToVisualize()" class and change "r=0;" to "r=radData -> RandomGen(-1, 1);"
+ 	 
+- If you want to change the distance at which the particle is injected: 
+	- Edit the value for "distance" in the GenerateToVisualize() class. 
+	- "distance=5;" will insert the particle 5*m above the tank for an angle of 0 deg. 
 
-#### Simulating photon waves within a range of angles
 
-  - Type "**./bulkice\_doumeki [om model] opticalphoton [depth index] [output folder] [run id] [distance from the detector center (m)] [start angle (degree)] [final angle (degree)] [increment (degree)]"**
-  - Available OM Models: [dom, mdom, lom16, lom18, pmt, degg, wom]
-  - Example run: " **./bulkice\_doumeki wom opticalphoton 88 output 0 2 0 180 0.5**".
+### 3. To change particles
+- The simulation is currently set up to inject muon flux into the SWGO tank. Changing the particle is not trivial. The user must change the "/path\_to\_swgo\_tanksim/mdom/src/OMSimPrimaryGeneratorAction.cc" file to insert a new particle definition under the GenerateToVisualize() class.  
+
 
 ## Explanation of Input Parameters
 

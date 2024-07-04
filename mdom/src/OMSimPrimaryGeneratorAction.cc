@@ -213,9 +213,6 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
 
 
 // computes x,y,z coordinates for the angle specified by user for visualization    
-// note: the injected angle can be anywhere on the surface, and will not be at a particular spot
-// if user wants to control the position where the angle is injected (center, edge) comment out line 220-260
-// and directly insert the coordinates and momentum you need in line 264-265
 
     G4double angle = gZenithAngle;
     G4double distance = 5;
