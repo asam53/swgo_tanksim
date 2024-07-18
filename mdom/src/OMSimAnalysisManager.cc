@@ -91,13 +91,13 @@ void OMSimAnalysisManager::Write()
 	}
 	else
 	{
-        G4cout << "********Failed to open " << ghitsfilename << " file*******" << G4endl;
+        G4cout << "********Vis mode: Failed to open " << ghitsfilename << "hits file*******" << G4endl;
 	}
 
 	std::cout << "Photon reaching Pressure Vessel: " << gVesselCount << std::endl
-	<< "Photon getting absorbed by PMT no_optic: " << gPMTBodyCount << std::endl
-	<< "Photon getting absorbed by WLS material: " << gWLSCount << std::endl
-	<< "Photon making hit and produced from WLS: " << gWLSAndHitCount << std::endl;
+	<< "Photon getting absorbed by PMT no_optic: " << gPMTBodyCount << std::endl;
+//	<< "Photon getting absorbed by WLS material: " << gWLSCount << std::endl
+//	<< "Photon making hit and produced from WLS: " << gWLSAndHitCount << std::endl;
 
 	gWLSAndHitCount = 0;
 	gVesselCount = 0;

@@ -155,7 +155,7 @@ bool OMSimPrimaryGeneratorAction::ParticleExist()
         case Electron:
             return fElectronAction -> ElectronExist();
         default:
-            std::cerr << "Invalid action type in OMSimPrimaryGeneratorAction::ParticleExist() " << std::endl
+            std::cerr << "Invalid action type in OMSimPrimaryGeneratorAction::ParticleExist()" << std::endl
             << "Aborting...." << std::endl;
             exit(0);
     }
@@ -174,7 +174,7 @@ void OMSimPrimaryGeneratorAction::LoadData()
             fElectronAction -> LoadData();
             break;
         default:
-            std::cerr << "Invalid action type in OMSimPrimaryGeneratorAction::ParticleExist() " << std::endl
+            std::cerr << "Invalid action type in OMSimPrimaryGeneratorAction::LoadData() " << std::endl
             << "Aborting...." << std::endl;
             exit(0);
     }
@@ -209,7 +209,6 @@ void OMSimPrimaryGeneratorAction::GenerateToVisualize()
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4String particleName = "mu-";
     G4ParticleDefinition* particle = particleTable -> FindParticle(particleName);
-
 
 
 // computes x,y,z coordinates for the angle specified by user for visualization    
@@ -328,8 +327,39 @@ void OMSimPrimaryGeneratorAction::SetupMuons(G4int numParticles)
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
     G4String particleName = "mu-";
     G4ParticleDefinition* particle = particleTable -> FindParticle(particleName);
+
+    // computes x,y,z coordinates for the angle specified by user for visualization    
+
+    G4double angle = 45;
+    G4double distance = 5;
+    G4double r = 0;   //radData -> RandomGen(-1, 1);
+
+    G4double y = 0;
+    G4double z = distance * cos(angle * deg) - r * sin(angle * deg);
+    G4double x = distance * sin(angle * deg) + r * cos(angle * deg);
+    x = x * m;
+    y = y * m;
+    z = z * m;
+
+    G4double ux = - sin(angle * deg);
+    G4double uy = 0;
+    G4double uz = - cos(angle * deg);
+
+    G4ThreeVector position(x, y, z);
+    G4ThreeVector direction(ux, uy, uz);
+    G4double energy = 1 * GeV;
+
+    fParticleGun -> SetParticleDefinition(particle);
+    fParticleGun -> SetParticleEnergy((energy));
+    fParticleGun -> SetParticlePosition(position);
+    fParticleGun -> SetParticleMomentumDirection(direction);
+
+/**
     fParticleGun -> SetParticleDefinition(particle);
     fParticleGun -> SetParticleEnergy((1 * GeV));
     fParticleGun -> SetParticlePosition(G4ThreeVector(0, 0, 5 * m));
     fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(0, 0, -1));
+**/
+
 }
+

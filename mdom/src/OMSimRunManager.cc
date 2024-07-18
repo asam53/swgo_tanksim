@@ -159,10 +159,10 @@ void OMSimRunManager::BeamOn()
                 exit(0);
         }
     }
-    /*else if(fInteraction == "vis")
+   /** else if(fInteraction == "vis")
     {
         GenerateToVisualize();
-    }*/
+    }**/
     else if(fInteraction == "opticalphoton")
     {
         /**
@@ -284,11 +284,11 @@ void OMSimRunManager::GenerateTh232()
         fRunManager -> BeamOn(1); //each primary will contain a separate event.
     }
 }
-/*void OMSimRunManager::GenerateToVisualize()
+/**void OMSimRunManager::GenerateToVisualize()
 {
     fPrimaryGenerator -> SetActionType(Visualization);
 
-}*/
+}**/
 void OMSimRunManager::GeneratePhoton()
 {
     fPrimaryGenerator -> SetActionType(Photon);
@@ -316,7 +316,7 @@ void OMSimRunManager::OpenFile()
   G4String filename = ghitsfilename + ".ecsv";
 	gAnalysisManager.datafile.open(filename, std::ios::out /*| std::ios::app*/);
 
-  //- Write header into data file. We want to use ECSV format only.
+  // Write header into data file. We want to use ECSV format only.
   gAnalysisManager.datafile << "# %ECSV 1.0\n# ---\n# delimiter: ','\n"
            << "# datatype: [\n"
            << "#   { name: RUN_ID,          datatype: int32             },\n"
